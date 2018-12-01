@@ -42,7 +42,7 @@ public class Economy_manager : MonoBehaviour {
 		total_waves += total_waves_production*Time.deltaTime;
 
 		//Update text showing it
-		waves_text.text = "You have " + total_waves.ToString("F1") + " waves";
+		waves_text.text = total_waves.ToString("F1") + "\n waves";
 	}
 
 	bool second_passed()

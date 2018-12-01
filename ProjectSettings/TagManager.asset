@@ -7,6 +7,8 @@ TagManager:
   - EconomyManager
   - IncrementalItem
   - Click
+  - BuyingManager
+  - GameLayout
   layers:
   - Default
   - TransparentFX
