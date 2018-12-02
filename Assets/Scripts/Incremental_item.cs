@@ -24,44 +24,13 @@ public class Incremental_item : MonoBehaviour {
 	public Button clicking_button; 	//Button to listen to when clicked
 	public List<Text> inner_text; 	//Name of the object - current number of objects - value
 	public string object_name; 		//Name of the object itself
-	bool clickable;					//If it can be clicked
+	public bool clickable = false;	//If it can be clicked
 
 	// Use this for initialization
 	void Start () {
-		//================================================================
-		// GET VARIABLES
-		//================================================================
-		//Button
-		clicking_button = transform.GetComponent<Button>();
-
-		//Inner text of the button
-		Text[] t = transform.GetComponentsInChildren<Text>();
-		foreach(Text t_aux in t)
-		{
-			inner_text.Add(t_aux);
-		}
-
-		//Find economy Manager
-		economyManager = GameObject.FindWithTag("EconomyManager").GetComponent<Economy_manager>();
-
-		//================================================================
-
-		//Button to listen to when pressed
-		clicking_button.onClick.AddListener(purchase);
-
-		//Set personal tag
-		gameObject.tag = "IncrementalItem";
-
-		//If it is clickable right now
-		clickable = false;
-
-		//Change visual aspect to "unclickable"
-		ColorBlock c = clicking_button.colors;
-		c.normalColor = new Color32(120,120,120,200);
-		clicking_button.colors = c;
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		wps_total = wps_per_unit * number_of_elements;
@@ -85,14 +54,36 @@ public class Incremental_item : MonoBehaviour {
 
 		//Update the text
 		inner_text[0].text = object_name;
-		inner_text[1].text = "" + actual_cost;
+		inner_text[1].text = "" + actual_cost.ToString("F1");
 		inner_text[2].text = "" + number_of_elements;
 	}
 
 	public void activate()
 	{
-		//Start the item to get all the variables
-		Start();
+		//================================================================
+		// GET VARIABLES
+		//================================================================
+		//Button
+		clicking_button = transform.GetComponent<Button>();
+
+		//Inner text of the button
+		inner_text = new List<Text>();
+		Text[] t = transform.GetComponentsInChildren<Text>();
+		foreach(Text t_aux in t)
+		{
+			inner_text.Add(t_aux);
+		}
+
+		//Find economy Manager
+		economyManager = GameObject.FindWithTag("EconomyManager").GetComponent<Economy_manager>();
+
+		//================================================================
+
+		//Button to listen to when pressed
+		clicking_button.onClick.AddListener(purchase);
+
+		//Set personal tag
+		gameObject.tag = "IncrementalItem";
 		
 		//Let it be clicked
 		clickable = true;

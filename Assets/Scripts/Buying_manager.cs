@@ -11,6 +11,7 @@ public class Buying_manager : MonoBehaviour {
 	public Vector2 size_delta;	//Width - height of the button
 	public Vector2 position;	//Initial position of the first button
 	public float   button_h; 	//Height of the button
+	public Font    item_font;	//Font to assign to incremental items
 
 
 	//================================================================
@@ -37,10 +38,16 @@ public class Buying_manager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		/* if(items[item_to_appear-1].elements_till_next_item <= items[item_to_appear-1].number_of_elements)
+
+		//Check if we activated all items
+		if(item_to_activate>=items.Count)
+			return;
+
+		//If the previous item (last activated) reached the number of elements to activate the next one, then do so
+		if(items[item_to_activate-1].number_of_elements >= items[item_to_activate-1].elements_till_next_item)
 		{
 			activate_item();
-		}*/
+		}
 	}
 
 	void create_item()
@@ -51,8 +58,6 @@ public class Buying_manager : MonoBehaviour {
 		Image m 	       = item.AddComponent<Image>() as Image;
 		Button b 		   = item.AddComponent<Button>() as Button;;
 		Incremental_item i = item.AddComponent<Incremental_item>() as Incremental_item;
-		Font f 			   = (Font)Resources.Load("Fonts/operational_amplifier.ttf");
-
 
 		//Add tag and layer
 		item.tag   = "IncrementalItem";
@@ -93,17 +98,22 @@ public class Buying_manager : MonoBehaviour {
 		//================================================================
 		for(int x = 0; x < 3; x++)
 		{
-			GameObject text_to_put = new GameObject();
+			//Create new text
+			GameObject text_to_put  = new GameObject();
+			RectTransform r_text    = text_to_put.AddComponent<RectTransform>() as RectTransform;
+			Text t 					= text_to_put.AddComponent<Text>() as Text;
+
+			//Set parent the item
+			text_to_put.transform.SetParent(item.transform);
+
 			//=======================
 			// Text component
 			//=======================
-			Text t = text_to_put.AddComponent<Text>() as Text;
-			t.font = f;
+			t.font = item_font;
 
 			//=======================
 			// Rect transform in each text
 			//=======================
-			RectTransform r_text = text_to_put.AddComponent<RectTransform>() as RectTransform;
 
 			if( x  == 0 )
 			{
@@ -112,7 +122,8 @@ public class Buying_manager : MonoBehaviour {
 				r_text.anchorMin   = new Vector2(0.5f, 1.0f);  //Upper-center anchor values
 				r_text.anchorMax   = new Vector2(0.5f, 1.0f);
 				r_text.pivot 	   = new Vector2(0.5f, 0.5f);
-				r.anchoredPosition = new Vector2(0.0f,-15.98f);			 	
+				r_text.anchoredPosition = new Vector2(0.0f,-15.98f);
+				r_text.localScale = new Vector3(1.0f,1.0f,1.0f);		 	
 			}
 
 			if( x  == 1 )
@@ -122,7 +133,8 @@ public class Buying_manager : MonoBehaviour {
 				r_text.anchorMin   = new Vector2(0.0f, 0.0f);  //Lower-left anchor values
 				r_text.anchorMax   = new Vector2(0.0f, 0.0f);
 				r_text.pivot 	   = new Vector2(0.5f, 0.5f);
-				r.anchoredPosition = new Vector2(90.4f,15.0f);			 	
+				r_text.anchoredPosition = new Vector2(90.4f,15.0f);
+				r_text.localScale = new Vector3(1.0f,1.0f,1.0f);			 	
 			}
 
 			if( x  == 2 )
@@ -132,7 +144,8 @@ public class Buying_manager : MonoBehaviour {
 				r_text.anchorMin   = new Vector2(1.0f, 0.0f);  //Lower-right anchor values
 				r_text.anchorMax   = new Vector2(1.0f, 0.0f);
 				r_text.pivot 	   = new Vector2(0.5f, 0.5f);
-				r.anchoredPosition = new Vector2(-51.7f,15.0f);				 	
+				r_text.anchoredPosition = new Vector2(-51.7f,15.0f);	
+				r_text.localScale = new Vector3(1.0f,1.0f,1.0f);			 	
 			}
 		}
 
@@ -148,6 +161,7 @@ public class Buying_manager : MonoBehaviour {
 			i.wps_per_unit 		 = 1;
 			i.number_of_elements = 0;
 			i.elements_till_next_item = 100;
+			i.object_name        = "Oscillator";
 		}
 
 		if(item_to_appear == 1)
@@ -158,6 +172,18 @@ public class Buying_manager : MonoBehaviour {
 			i.wps_per_unit 		 = 8;
 			i.number_of_elements = 0;
 			i.elements_till_next_item = 100;
+			i.object_name        = "Synth-ons";
+		}
+
+		if(item_to_appear == 2)
+		{
+			i.base_cost 		 = 2000.0;
+			i.actual_cost		 = 2000.0;
+			i.augment_ratio		 = 0.165;
+			i.wps_per_unit 		 = 30;
+			i.number_of_elements = 0;
+			i.elements_till_next_item = 200;
+			i.object_name        = "Synth Strings";
 		}
 
 		//Add to the list of items
