@@ -12,6 +12,8 @@ public class Buying_manager : MonoBehaviour {
 	public Vector2 position;	//Initial position of the first button
 	public float   button_h; 	//Height of the button
 	public Font    item_font;	//Font to assign to incremental items
+	public Sprite  item_sprite; //Background image
+	public Sprite  item_highlighted_sprite;
 
 
 	//================================================================
@@ -81,17 +83,26 @@ public class Buying_manager : MonoBehaviour {
 		//================================================================
 		// Image
 		//================================================================
+		m.sprite = item_sprite;
 
 		//================================================================
 		// Button
 		//================================================================
 		ColorBlock c_b = b.colors;					 
-		c_b.normalColor = new Color32(210,93,0,255); //Change normal color
+		c_b.normalColor      = new Color32(120,120,120,255); //Change normal color to greyish non-clickable
 		b.colors = c_b;
+
+		SpriteState s_state = new SpriteState(); 			 //Leave the highlighted sprite
+		s_state.highlightedSprite = item_highlighted_sprite;
+		b.spriteState = s_state;
 		
-		Navigation nav_mode = new Navigation(); 	 //Set navigation to none so it's stop highlighting after a click
+		Navigation nav_mode = new Navigation(); 	 		 //Set navigation to none so it's stop highlighting after a click
 		nav_mode.mode = Navigation.Mode.None;
-		b.navigation = nav_mode;
+		b.navigation  = nav_mode;
+
+		b.transition  = Selectable.Transition.SpriteSwap;	 //Let it transition between sprites
+
+		b.enabled     = false;								 //Not active in the beginning
 
 		//================================================================
 		// Text childs

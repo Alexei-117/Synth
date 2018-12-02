@@ -39,7 +39,7 @@ public class Incremental_item : MonoBehaviour {
 	void purchase()
 	{
 		//If it is clickable, then you can buy it
-		if(!clickable)
+		if(!clicking_button.isActiveAndEnabled)
 			return;
 
 		//First buy the object (if false you can't buy it)
@@ -79,7 +79,7 @@ public class Incremental_item : MonoBehaviour {
 
 		//================================================================
 
-		//Button to listen to when pressed
+		//Function to activate when pressed
 		clicking_button.onClick.AddListener(purchase);
 
 		//Set personal tag
@@ -90,8 +90,11 @@ public class Incremental_item : MonoBehaviour {
 
 		//Change visual aspect to "clickable"
 		ColorBlock c = clicking_button.colors;
-		c.normalColor = new Color32(255,255,255,255);
+		c.normalColor      = new Color32(255,255,255,255); //Change normal color
 		clicking_button.colors = c;
+
+		//Enable button
+		clicking_button.enabled = true;
 	}
 
 
