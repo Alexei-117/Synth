@@ -70,7 +70,7 @@ public class Economy_manager : MonoBehaviour {
 		}
 	}
 
-	public bool buy_with_cost(double cost)
+	public bool buy(double cost)
 	{
 		//Don't buy over what money you have
 		if (cost > total_waves)
@@ -81,7 +81,14 @@ public class Economy_manager : MonoBehaviour {
 
 		return true;
 	}
+	public bool can_buy(double cost)
+	{
+		//If can buy, return true
+		if (cost > total_waves)
+			return false;
 
+		return true;
+	}
 	public void increment_waves(double input)
 	{
 		total_waves += input;

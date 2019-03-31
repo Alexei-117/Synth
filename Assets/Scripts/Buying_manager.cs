@@ -12,8 +12,10 @@ public class Buying_manager : MonoBehaviour {
 	public Vector2 position;	//Initial position of the first button
 	public float   button_h; 	//Height of the button
 	public Font    item_font;	//Font to assign to incremental items
-	public Sprite  item_sprite; //Background image
+	public Sprite  item_sprite; //Background image of the item
 	public Sprite  item_highlighted_sprite;
+	public Sprite  item_disabled_sprite;
+	public Sprite  item_pressed_sprite;
 
 
 	//================================================================
@@ -88,12 +90,10 @@ public class Buying_manager : MonoBehaviour {
 		//================================================================
 		// Button
 		//================================================================
-		ColorBlock c_b = b.colors;					 
-		c_b.normalColor      = new Color32(120,120,120,255); //Change normal color to greyish non-clickable
-		b.colors = c_b;
-
-		SpriteState s_state = new SpriteState(); 			 //Leave the highlighted sprite
+		SpriteState s_state = new SpriteState(); 			 //Change sprites to make the transition happen
 		s_state.highlightedSprite = item_highlighted_sprite;
+		s_state.pressedSprite     = item_pressed_sprite;
+		s_state.disabledSprite    = item_disabled_sprite;
 		b.spriteState = s_state;
 		
 		Navigation nav_mode = new Navigation(); 	 		 //Set navigation to none so it's stop highlighting after a click
@@ -102,7 +102,8 @@ public class Buying_manager : MonoBehaviour {
 
 		b.transition  = Selectable.Transition.SpriteSwap;	 //Let it transition between sprites
 
-		b.enabled     = false;								 //Not active in the beginning
+		b.interactable= false;								 //Not active in the beginning (appears grey)
+		b.enabled     = true;								 //Not active in the beginning (appears grey)
 
 		//================================================================
 		// Text childs
@@ -128,35 +129,41 @@ public class Buying_manager : MonoBehaviour {
 
 			if( x  == 0 )
 			{
-				t.fontSize = 14;
-				r_text.sizeDelta   = size_delta;
+				t.fontSize  = 30;
+				t.alignment = TextAnchor.UpperLeft;
+				t.color 	= new Color32(89,23,129,255);	   //Color: #591781
+				r_text.sizeDelta   = new Vector2(273.9f,54.4f);
 				r_text.anchorMin   = new Vector2(0.5f, 1.0f);  //Upper-center anchor values
 				r_text.anchorMax   = new Vector2(0.5f, 1.0f);
 				r_text.pivot 	   = new Vector2(0.5f, 0.5f);
-				r_text.anchoredPosition = new Vector2(0.0f,-15.98f);
-				r_text.localScale = new Vector3(1.0f,1.0f,1.0f);		 	
+				r_text.anchoredPosition = new Vector2(83.0f,-27.2f);
+				r_text.localScale  = new Vector3(1.0f,1.0f,1.0f);		 	
 			}
 
 			if( x  == 1 )
 			{
-				t.fontSize = 12;
-				r_text.sizeDelta   = size_delta;
+				t.fontSize  = 26;
+				t.alignment = TextAnchor.MiddleLeft;
+				t.color     = new Color32(69,177,200,255);     //Color: #45B1C8
+				r_text.sizeDelta   = new Vector2(100.12f,33.18f);
 				r_text.anchorMin   = new Vector2(0.0f, 0.0f);  //Lower-left anchor values
 				r_text.anchorMax   = new Vector2(0.0f, 0.0f);
 				r_text.pivot 	   = new Vector2(0.5f, 0.5f);
-				r_text.anchoredPosition = new Vector2(90.4f,15.0f);
-				r_text.localScale = new Vector3(1.0f,1.0f,1.0f);			 	
+				r_text.anchoredPosition = new Vector2(133.06f,12.5f);
+				r_text.localScale  = new Vector3(1.0f,1.0f,1.0f);			 	
 			}
 
 			if( x  == 2 )
 			{
-				t.fontSize = 12;
-				r_text.sizeDelta   = size_delta;
+				t.fontSize  = 26;
+				t.alignment = TextAnchor.MiddleRight;
+				t.color 	= new Color32(89,23,129,255);	   //Color: #591781
+				r_text.sizeDelta   = new Vector2(82.41f,35.73f);
 				r_text.anchorMin   = new Vector2(1.0f, 0.0f);  //Lower-right anchor values
 				r_text.anchorMax   = new Vector2(1.0f, 0.0f);
 				r_text.pivot 	   = new Vector2(0.5f, 0.5f);
-				r_text.anchoredPosition = new Vector2(-51.7f,15.0f);	
-				r_text.localScale = new Vector3(1.0f,1.0f,1.0f);			 	
+				r_text.anchoredPosition = new Vector2(-47.3f,12.5f);	
+				r_text.localScale  = new Vector3(1.0f,1.0f,1.0f);			 	
 			}
 		}
 
@@ -173,6 +180,8 @@ public class Buying_manager : MonoBehaviour {
 			i.number_of_elements = 0;
 			i.elements_till_next_item = 100;
 			i.object_name        = "Oscillator";
+			i.base_txt_color     = new Color32(89,23,129,255);
+			i.price_txt_color    = new Color32(69,177,200,255);
 		}
 
 		if(item_to_appear == 1)
@@ -184,6 +193,8 @@ public class Buying_manager : MonoBehaviour {
 			i.number_of_elements = 0;
 			i.elements_till_next_item = 100;
 			i.object_name        = "Synth-ons";
+			i.base_txt_color     = new Color32(89,23,129,255);
+			i.price_txt_color    = new Color32(69,177,200,255);
 		}
 
 		if(item_to_appear == 2)
@@ -195,6 +206,8 @@ public class Buying_manager : MonoBehaviour {
 			i.number_of_elements = 0;
 			i.elements_till_next_item = 200;
 			i.object_name        = "Synth Strings";
+			i.base_txt_color     = new Color32(89,23,129,255);
+			i.price_txt_color    = new Color32(69,177,200,255);
 		}
 
 		//Add to the list of items
